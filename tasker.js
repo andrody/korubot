@@ -8,10 +8,10 @@ const bot = require("./discord").bot
 const RichEmbed = new Discord.RichEmbed()
 
 const allUsers = [
-    { discordUser: "130404454401835008", username: "andrody" },
-    { discordUser: "132292098752905216", username: "bruno" },
-    { discordUser: "133715213240369152", username: "mero" },
-    { discordUser: "132295133914726401", username: "isaac" },
+    { discordUser: "130404454401835008", name: "Andrody" },
+    { discordUser: "132292098752905216", name: "Bruno" },
+    { discordUser: "133715213240369152", name: "Mero" },
+    { discordUser: "132295133914726401", name: "Isaac" },
 ]
 
 /*
@@ -117,7 +117,7 @@ const listAllTasks = async msg => {
     allUsers.map(u => {
         if (tasks.findIndex(t => t.discordUser == u.discordUser) > -1) {
             const embed = RichEmbed.setTitle(
-                "Tarefas abertas do **" + msg.author.username + "**"
+                "Tarefas abertas do **" + u.name + "**"
             )
                 .setColor("#2ecc71")
                 .setDescription(
@@ -144,7 +144,7 @@ const getAllTasks = async msg => {
     return allUsers.map(u => {
         if (tasks.findIndex(t => t.discordUser == u.discordUser) > -1) {
             return RichEmbed.setTitle(
-                "Tarefas abertas do **" + u.username + "**"
+                "Tarefas abertas do **" + u.name + "**"
             )
                 .setColor("#2ecc71")
                 .setDescription(

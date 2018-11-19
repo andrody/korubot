@@ -88,7 +88,8 @@ const chargeFirstSchedule = schedule.scheduleJob("0 19 * * 1-5", function() {
     Charger.chargeNextTasks()
 
     // 2 hours
-    setTimeout(Charger.chargeNextSecondTime, 7200000)
+    // setTimeout(Charger.chargeNextSecondTime, 7200000)
+    setTimeout(Charger.chargeNextSecondTime, 600000)
 })
 
 // Pedir tarefas pela segunda vez

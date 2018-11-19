@@ -22,4 +22,3 @@ colocar listagem de todas as tasks em um mesmo embed, um embaixo do outro igual 
 colocar foto do usuario no embed igual no video qdo for listas as tasks
 marcar horario de reuniao no escritorio? (perguntar talvez?)
 colocar o helpme num embed em duas colunas igual no video
-fazer a koru ser um gerenciador financeiro, nos podemos adicionar ou retirar e ela mostra o saldo e qto o joel nos deve
