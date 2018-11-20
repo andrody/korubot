@@ -1,19 +1,21 @@
 const splitargs = require("splitargs")
 const minimist = require("minimist")
-const Task = require("./managers/task")
+
+const Task = require("./managers/Task")
+const Charge = require("./managers/Charge")
 
 const doCommand = message => {
-    const commands = minimist(splitargs(message))
+    const commands = minimist(splitargs(message.content))
     const command = commands._[1]
     switch (command) {
         case "add":
-            Task.add(commands, message)
+            Task.add(commands[2], message)
             break
         case "done":
-            Tasker.completeTask(rest.trim(), msg)
+            Task.complete(rest.trim(), msg)
             break
         case "arregar":
-            Tasker.cancelTask(rest.trim(), msg)
+            Task.cancel(rest.trim(), msg)
             break
         case "folgar":
             msg.reply(
@@ -22,9 +24,9 @@ const doCommand = message => {
             break
         case "tasks":
             if (msg.content.split(" ")[2] == "-a") {
-                Tasker.listAllTasks(msg)
+                Task.listAllTasks(msg)
             } else {
-                Tasker.listTasks(msg)
+                Task.listTasks(msg)
             }
             break
         case "help":
@@ -32,14 +34,14 @@ const doCommand = message => {
             break
         case "next":
             if (msg.author.id == "130404454401835008") {
-                Charger.chargeNextTasks(msg)
+                Charge.chargeNextTasks(msg)
             }
             break
         case "next2":
-            Charger.chargeNextSecondTime()
+            Charge.chargeNextSecondTime()
             break
         case "bomdia":
-            Tasker.showDailyTasks()
+            Task.showDailyTasks()
             break
         default:
             msg.reply(

@@ -21,7 +21,7 @@ bot.login(TOKEN)
 bot.on("message", async message => {
     if (message.author.equals(bot.user)) return
     if (!message.content.startsWith(PREFIX)) return
-    doCommand(message.content)
+    doCommand(message)
 
     // const command = msg.content.split(" ")[1]
     // const rest = msg.content.substring(

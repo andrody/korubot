@@ -1,20 +1,10 @@
-const discord = require("./discord")
-const Charge = require("./models/Charge")
-const Task = require("./models/Task")
+const ChargeModel = require("./models/ChargeModel")
+const Task = require("./models/TaskModel")
 
 // Discord Imports
 const Discord = require("discord.js")
 const RichEmbed = new Discord.RichEmbed()
-const CHANNEL_ID = "130406987388289025"
 const bot = require("./discord").bot
-// const bot = new Discord.Client()
-
-const allUsers = [
-    { discordUser: "130404454401835008", username: "andrody" },
-    { discordUser: "132292098752905216", username: "bruno" },
-    { discordUser: "133715213240369152", username: "mero" },
-    { discordUser: "132295133914726401", username: "isaac" },
-]
 
 /*
  *  Next Tasks
@@ -29,12 +19,12 @@ const chargeNextTasks = async msg => {
             ""
         )
         sendMessageChargeNext(users_mentions, freeUsers)
-        Charge.saveAwaitingNextCharges(freeUsers)
+        ChargeModel.saveAwaitingNextCharges(freeUsers)
     }
 }
 
 const getFreeUsers = async users => {
-    const pendingTasks = await Task.Model.find({ status: "OPEN" })
+    const pendingTasks = await TaskModel.find({ status: "OPEN" })
     const freeUsers = allUsers.filter(
         u =>
             pendingTasks.findIndex(pc => pc.discordUser === u.discordUser) ===
@@ -44,7 +34,7 @@ const getFreeUsers = async users => {
 }
 
 const getChargedUsers = async users => {
-    const chargedUsers = await Charge.Model.find({ type: "AWAITING_NEXT_TASK", status: 'PENDING' })
+    const chargedUsers = await ChargeModel.find({ type: "AWAITING_NEXT_TASK", status: 'PENDING' })
     return chargedUsers
 }
 
@@ -75,7 +65,7 @@ const chargeNextSecondTime = async () => {
 }
 
 const clearCharge = async (discordUser) => {
-    await Charge.deleteCharge(discordUser)
+    await ChargeModel.deleteCharge(discordUser)
 }
 
 module.exports = {

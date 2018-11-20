@@ -1,5 +1,4 @@
-var a = "ko add -m 'vamos para a feira' -u romerio"
-console.log(splitargs(a))
+var a = "ko add 'para a feira' -u romerio"
 var splitargs = require('splitargs');
 const commandLineUsage = require('command-line-usage')
 var argv = require('minimist')(splitargs(a))

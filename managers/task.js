@@ -1,23 +1,15 @@
-const Charger = require("./charger")
 const TaskModel = require("./models/TaskModel")
-const CHANNEL_ID = "130406987388289025"
+const Charge = require("./Charge")
+const { USERS, CHANNEL_GENERAL } = require("../contants")
 
-// Discord Imports
 const Discord = require("discord.js")
 const bot = require("./discord").bot
 const RichEmbed = new Discord.RichEmbed()
 
-const allUsers = [
-    { discordUser: "130404454401835008", name: "Andrody" },
-    { discordUser: "132292098752905216", name: "Bruno" },
-    { discordUser: "133715213240369152", name: "Mero" },
-    { discordUser: "132295133914726401", name: "Isaac" },
-]
-
 /*
  *  Add Task
  */
-const add = async (commands, message) => {
+const add = async (description, message) => {
     const userTasks = await TaskModel.find({
         discordUser: message.author.id,
         status: "OPEN"
@@ -34,67 +26,69 @@ const add = async (commands, message) => {
         userTasks[0].save(err => console.log(err))
         type = "TASK_2"
     }
-    await Task.createTask(
+    await TaskModel.createTask(
         {
             discordUser: message.author.id,
             status: "OPEN",
-            description: commands,
+            description,
             type
         },
-        () => listTasks(msg)
+        () => list(message)
     )
 
-    Charger.clearCharge(msg.author.id)
+    Charge.clearCharge(message.author.id)
 }
 
-const completeTask = async (taskNumber, msg) => {
-    const task = await Task.Model.findOne({
+const complete = async (taskNumber, message) => {
+    const task = await TaskModel.findOne({
         type: "TASK_" + taskNumber,
         status: "OPEN",
-        discordUser: msg.author.id
+        discordUser: message.author.id
     })
     if (task) {
         task.status = "DONE"
         await task.save()
-        msg.channel.send(
+        message.channel.send(
             ":checkered_flag: **" +
-                msg.author.username +
+                message.author.username +
                 "** concluiu a tarefa  :confetti_ball::tada::tada:*" +
                 task.description +
                 "* :tada::tada::confetti_ball:"
         )
-        listTasks(msg)
+        list(message)
     } else {
-        msg.reply("Você não tem nenhuma tarefa com a numeração " + taskNumber)
+        message.reply(
+            "Você não tem nenhuma tarefa com a numeração " + taskNumber
+        )
     }
 }
 
-const cancelTask = async (taskNumber, msg) => {
-    const task = await Task.Model.findOne({
+const cancel = async (taskNumber, message) => {
+    const task = await TaskModel.findOne({
         type: "TASK_" + taskNumber,
         status: "OPEN",
-        discordUser: msg.author.id
+        discordUser: message.author.id
     })
     if (task) {
         task.status = "DONE"
         await task.save()
-        msg.reply(
+        message.reply(
             "Você desistiu de fazer a tarefa *" +
                 task.description +
                 "*. Que vergonha! :unamused: :unamused: "
         )
     } else {
-        msg.reply("Essa task não existe mongol")
+        message.reply("Essa task não existe mongol")
     }
 }
 
-const listTasks = async msg => {
-    const tasks = await Task.Model.find({
+const list = async message => {
+    const tasks = await TaskModel.find({
         status: "OPEN",
-        discordUser: msg.author.id
+        discordUser: message.author.id
     })
     const embed = RichEmbed.setTitle(
-        "Tarefas abertas do **" + msg.author.username + "**"
+        "Tarefas abertas do **" + message.author.username + "**"
     )
         .setColor("#2ecc71")
         .setDescription(
@@ -106,11 +100,11 @@ const listTasks = async msg => {
                     t.description
             )
         )
-    msg.channel.send(embed)
+    message.channel.send(embed)
 }
 
-const listAllTasks = async msg => {
-    const tasks = await Task.Model.find({
+const listAll = async message => {
+    const tasks = await TaskModel.find({
         status: "OPEN"
     })
 
@@ -131,21 +125,19 @@ const listAllTasks = async msg => {
                                 t.description
                         )
                 )
-            msg.channel.send(embed)
+            message.channel.send(embed)
         }
     })
 }
 
-const getAllTasks = async msg => {
-    const tasks = await Task.Model.find({
+const getAllTasks = async message => {
+    const tasks = await TaskModel.find({
         status: "OPEN"
     })
 
-    return allUsers.map(u => {
+    return USERS.map(u => {
         if (tasks.findIndex(t => t.discordUser == u.discordUser) > -1) {
-            return RichEmbed.setTitle(
-                "Tarefas abertas do **" + u.name + "**"
-            )
+            return RichEmbed.setTitle("Tarefas abertas do **" + u.name + "**")
                 .setColor("#2ecc71")
                 .setDescription(
                     tasks
@@ -165,7 +157,7 @@ const getAllTasks = async msg => {
 const showDailyTasks = async () => {
     const userTasks = await getAllTasks()
     if (userTasks.length) {
-        const channel = bot.channels.get(CHANNEL_ID)
+        const channel = bot.channels.get(CHANNEL_GENERAL)
         channel.send([
             "Bom dia meus queridos! Que belo dia para fazer a Koruja crescer!",
             "Vamos olhar as tarefas que temos cadastradas para hoje..."
@@ -181,9 +173,9 @@ const showDailyTasks = async () => {
 
 module.exports = {
     add,
-    completeTask,
-    cancelTask,
-    listTasks,
-    listAllTasks,
+    complete,
+    cancel,
+    list,
+    listAll,
     showDailyTasks
 }
