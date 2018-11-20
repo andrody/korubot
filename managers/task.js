@@ -1,5 +1,5 @@
 const Charger = require("./charger")
-const Task = require("./models/Task")
+const TaskModel = require("./models/TaskModel")
 const CHANNEL_ID = "130406987388289025"
 
 // Discord Imports
@@ -15,16 +15,16 @@ const allUsers = [
 ]
 
 /*
- *  Create Task
+ *  Add Task
  */
-const createTask = async (rest, msg) => {
-    const userTasks = await Task.Model.find({
-        discordUser: msg.author.id,
+const add = async (commands, message) => {
+    const userTasks = await TaskModel.find({
+        discordUser: message.author.id,
         status: "OPEN"
     })
     let type = "TASK_1"
     if (userTasks.length == 2) {
-        msg.reply(
+        message.reply(
             "Você já tem duas tarefas cadastradas, delete ou conclua uma para adicionar novas tarefas.\nDigite **!help** para ver os todos os comandos."
         )
         return
@@ -36,9 +36,9 @@ const createTask = async (rest, msg) => {
     }
     await Task.createTask(
         {
-            discordUser: msg.author.id,
+            discordUser: message.author.id,
             status: "OPEN",
-            description: rest,
+            description: commands,
             type
         },
         () => listTasks(msg)
@@ -180,7 +180,7 @@ const showDailyTasks = async () => {
 }
 
 module.exports = {
-    createTask,
+    add,
     completeTask,
     cancelTask,
     listTasks,
