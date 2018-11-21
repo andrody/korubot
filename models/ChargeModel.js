@@ -28,7 +28,7 @@ class ChargeModel {
         )
     }
 
-    async deleteCharg(discordUser) {
+    async deleteCharge(discordUser) {
         await this.model.find({ discordUser }).remove().exec()
     }
 }

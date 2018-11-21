@@ -6,7 +6,8 @@ const TaskSchema = new Schema({
     discordUser: String,
     status: String,
     description: String,
-    type: String
+    type: String,
+    lastSkip: Date,
 })
 
 class TaskModel {

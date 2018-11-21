@@ -26,6 +26,10 @@ const doCommand = message => {
     case "bomdia":
         Task.showDailyTasks()
         break
+    case "chargeTasks":
+        Charge.chargeIfTasksDone()
+        setTimeout(Charge.chargeIfTasksDoneSecondTime, 10000)
+        break
     default:
         message.reply(
             "Comando inválido. Tente **!help** para ver a lista de comandos"
@@ -48,6 +52,9 @@ const taskCommands = (commands, message) => {
         break
     case "list":
         Task.list(commands.a, message)
+        break
+    case "skip":
+        Task.skip(message)
         break
     default:
         Task.list(commands.a, message)

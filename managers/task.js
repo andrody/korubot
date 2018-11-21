@@ -30,6 +30,7 @@ const add = async (description, message) => {
             discordUser: message.author.id,
             status: "OPEN",
             description,
+            lastSkip: new Date(),
             type
         },
         () => list(false, message)
@@ -75,7 +76,7 @@ const cancel = async (taskNumber, message) => {
         discordUser: message.author.id
     })
     if (task) {
-        task.status = "DONE"
+        task.status = "CANCELLED"
         await task.save()
         message.reply(
             "Você desistiu de fazer a tarefa *" +
@@ -88,15 +89,32 @@ const cancel = async (taskNumber, message) => {
 }
 
 /*
+ *  Skip Task
+ */
+const skip = async (message) => {
+    const task = await TaskModel.model.findOne({
+        status: "OPEN",
+        discordUser: message.author.id
+    })
+    if (task) {
+        task.lastSkip = new Date()
+        await task.save()
+        message.reply("Você adiou suas tarefas para amanhã! Ta vagundin o bixin né?")
+    } else {
+        message.reply("Não tem nenhuma tarefa")
+    }
+}
+
+/*
  *  List Task
  */
-const list = async (isAllUsers, message, { user }) => {
+const list = async (isAllUsers, message, { user = false } = {}) => {
     if (isAllUsers) {
         listAllUsersTask(message)
     } else {
         const tasks = await TaskModel.model.find({
             status: "OPEN",
-            discordUser: message.author.id
+            discordUser: user ? user.discordUser : message.author.id
         })
         tasks.map(t => {
             const embed = RichEmbed.setDescription(
@@ -108,6 +126,11 @@ const list = async (isAllUsers, message, { user }) => {
                 message.channel.send(embed)
             }
         })
+        if (!tasks.length && !user) {
+            message.channel.send(
+                "Você não nenhuma tarefa amorzinho. Por que não cadastra uma?"
+            )
+        }
     }
 }
 
@@ -194,6 +217,9 @@ module.exports = {
     complete,
     cancel,
     list,
+    skip,
     listAllUsersTask,
     showDailyTasks
 }
+
+exports.list = list

@@ -82,15 +82,17 @@ const clearCharge = async discordUser => {
  */
 const chargeIfTasksDone = async () => {
     const busyUsers = await getUsers()
+    console.log('busyUsers', busyUsers)
     busyUsers.map(async u => {
         const user = await bot.fetchUser(u.discordUser)
+        console.log('Cobrando se tarefas foram feita do ' + u.name)
         user.send(
             "Olá " +
                 u.name +
                 "! Eu vi que você tem tarefas abertas, você já terminou elas?"
         )
         Task.list(null, null, { user })
-        user.send("Caso queria adiar essas tarefas para amanha digite `ko task skip`\n Caso tenha terminado todas digite `ko task done all`")
+        user.send("`Caso queria adiar essas tarefas para amanha digite ko task skip\nCaso tenha terminado todas digite ko task done all`")
     })
 }
 
@@ -100,14 +102,16 @@ const chargeIfTasksDoneSecondTime = async () => {
         const tasks = await TaskModel.model.find({ status: "OPEN", discordUser: u.discordUser })
         let hasTasks = false
         tasks.map(t => {
-            if (differenceInHours(mongoose.Types.ObjectId((t.id).getTimestamp(), new Date()) > 8) {
+            console.log(Math.abs(differenceInHours(t.lastSkip, new Date())))
+            console.log(t.lastSkip)
+            if (Math.abs(differenceInHours(t.lastSkip, new Date())) >= 0) {
                 hasTasks = true
             }
         })
         if (hasTasks) {
             const user = await bot.fetchUser(u.discordUser)
             user.send(
-                "Ow seu filha da puta! Já falei que você tem tarefa aberta, finaliza essa porra ou adia ela pra amanha!\nNão me obrigue a vir cobrar de novo viu!!??")
+                "Ow seu filha da puta! Já falei que você tem tarefa aberta, finaliza essa porra ou adia ela pra amanha!\nNão me obrigue a vir cobrar de novo viu!!?? :rage::rage::rage:  ")
         }
     })
 }
