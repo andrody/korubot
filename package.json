@@ -19,8 +19,5 @@
     "mongoose": "^5.3.12",
     "node-schedule": "^1.3.0",
     "splitargs": "0.0.7"
-  },
-  "now": {
-      "name": "korubot"
   }
 }
