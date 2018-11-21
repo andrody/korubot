@@ -16,9 +16,8 @@ bot.on("message", async message => {
     doCommand(message)
 })
 
-/*
- * Schedulers
- */
+require('http').createServer().listen(3000)
+
 
 
 
