@@ -104,7 +104,7 @@ const chargeIfTasksDoneSecondTime = async () => {
         tasks.map(t => {
             console.log(Math.abs(differenceInHours(t.lastSkip, new Date())))
             console.log(t.lastSkip)
-            if (Math.abs(differenceInHours(t.lastSkip, new Date())) >= 0) {
+            if (Math.abs(differenceInHours(t.lastSkip, new Date())) >= 8) {
                 hasTasks = true
             }
         })
