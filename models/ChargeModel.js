@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema;
-const ObjectId = Schema.ObjectId;
+const mongoose = require("mongoose")
+const Schema = mongoose.Schema
+const ObjectId = Schema.ObjectId
 
 const ChargeSchema = new Schema({
     discordUser: String,
@@ -10,16 +10,16 @@ const ChargeSchema = new Schema({
 
 class ChargeModel {
     constructor() {
-        this.model = mongoose.model('Charge', ChargeSchema, 'Charge') 
+        this.model = mongoose.model("Charge", ChargeSchema, "Charge") 
     }
 
-    saveAwaitingNextCharges = async (users) => {
-        await this.model.find({ type: 'AWAITING_NEXT_TASK' }).remove().exec()
+    async saveAwaitingNextCharges(users) {
+        await this.model.find({ type: "AWAITING_NEXT_TASK" }).remove().exec()
         await this.model.insertMany(
             users.map(u => ({
                 discordUser: u.discordUser,
                 type: "AWAITING_NEXT_TASK",
-                status: 'PENDING'
+                status: "PENDING"
             })),
             null,
             err => {
@@ -28,8 +28,8 @@ class ChargeModel {
         )
     }
 
-    deleteCharge = async (discordUser) => {
-        await Charge.find({ discordUser }).remove().exec()
+    async deleteCharg(discordUser) {
+        await this.model.find({ discordUser }).remove().exec()
     }
 }
 

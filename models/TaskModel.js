@@ -14,7 +14,7 @@ class TaskModel {
         this.model = mongoose.model("Task", TaskSchema, "Task")
     }
 
-    createTask = async (task, cb) => {
+    async createTask(task, cb) {
         await this.model.create(task, err => {
             console.log(err)
             cb(err)

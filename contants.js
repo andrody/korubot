@@ -5,7 +5,8 @@ const USERS = [
     { discordUser: "132295133914726401", name: "Isaac" },
 ]
 
-const CHANNEL_GENERAL = "130406987388289025"
+// const CHANNEL_GENERAL = "130406987388289025"
+const CHANNEL_GENERAL = "314465869520568320"
 
 module.exports = {
     USERS,

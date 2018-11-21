@@ -1,16 +1,15 @@
-const TaskModel = require("./models/TaskModel")
+const TaskModel = require("../models/TaskModel")
 const Charge = require("./Charge")
 const { USERS, CHANNEL_GENERAL } = require("../contants")
 
-const Discord = require("discord.js")
-const bot = require("./discord").bot
-const RichEmbed = new Discord.RichEmbed()
+const bot = require("../discord").bot
+const RichEmbed = require("../discord").RichEmbed
 
 /*
  *  Add Task
  */
 const add = async (description, message) => {
-    const userTasks = await TaskModel.find({
+    const userTasks = await TaskModel.model.find({
         discordUser: message.author.id,
         status: "OPEN"
     })
@@ -33,14 +32,17 @@ const add = async (description, message) => {
             description,
             type
         },
-        () => list(message)
+        () => list(false, message)
     )
 
     Charge.clearCharge(message.author.id)
 }
 
+/*
+ *  Complete Task
+ */
 const complete = async (taskNumber, message) => {
-    const task = await TaskModel.findOne({
+    const task = await TaskModel.model.findOne({
         type: "TASK_" + taskNumber,
         status: "OPEN",
         discordUser: message.author.id
@@ -55,7 +57,7 @@ const complete = async (taskNumber, message) => {
                 task.description +
                 "* :tada::tada::confetti_ball:"
         )
-        list(message)
+        list(false, message)
     } else {
         message.reply(
             "Você não tem nenhuma tarefa com a numeração " + taskNumber
@@ -63,8 +65,11 @@ const complete = async (taskNumber, message) => {
     }
 }
 
+/*
+ *  Cancel Task
+ */
 const cancel = async (taskNumber, message) => {
-    const task = await TaskModel.findOne({
+    const task = await TaskModel.model.findOne({
         type: "TASK_" + taskNumber,
         status: "OPEN",
         discordUser: message.author.id
@@ -82,56 +87,69 @@ const cancel = async (taskNumber, message) => {
     }
 }
 
-const list = async message => {
-    const tasks = await TaskModel.find({
-        status: "OPEN",
-        discordUser: message.author.id
-    })
-    const embed = RichEmbed.setTitle(
-        "Tarefas abertas do **" + message.author.username + "**"
-    )
-        .setColor("#2ecc71")
-        .setDescription(
-            tasks.map(
-                (t, i) =>
-                    ":balloon:  (" +
-                    t.type.substring(5) +
-                    ")   " +
-                    t.description
-            )
-        )
-    message.channel.send(embed)
+/*
+ *  List Task
+ */
+const list = async (isAllUsers, message, { user }) => {
+    if (isAllUsers) {
+        listAllUsersTask(message)
+    } else {
+        const tasks = await TaskModel.model.find({
+            status: "OPEN",
+            discordUser: message.author.id
+        })
+        tasks.map(t => {
+            const embed = RichEmbed.setDescription(
+                "**" + t.type.substring(5) + "**   " + t.description
+            ).setThumbnail(undefined)
+            if (user) {
+                user.send(embed)
+            } else {
+                message.channel.send(embed)
+            }
+        })
+    }
 }
 
-const listAll = async message => {
-    const tasks = await TaskModel.find({
+/*
+ *  List All Users Task
+ */
+const listAllUsersTask = async message => {
+    const tasks = await TaskModel.model.find({
         status: "OPEN"
     })
 
-    allUsers.map(u => {
+    USERS.map(async u => {
+        const user = await bot.fetchUser(u.discordUser)
+        const avatar = user.avatarURL
         if (tasks.findIndex(t => t.discordUser == u.discordUser) > -1) {
-            const embed = RichEmbed.setTitle(
-                "Tarefas abertas do **" + u.name + "**"
-            )
-                .setColor("#2ecc71")
+            // .setTitle(
+            //     "Tarefas abertas do **" + u.name + "**"
+            // )
+            const embed = RichEmbed
+                // .setColor("#2ecc71")
                 .setDescription(
                     tasks
                         .filter(t => t.discordUser == u.discordUser)
                         .map(
                             (t, i) =>
-                                ":balloon:  (" +
+                                "**" +
                                 t.type.substring(5) +
-                                ")   " +
-                                t.description
+                                "**   " +
+                                t.description +
+                                "\n"
                         )
                 )
+                .setThumbnail(avatar)
             message.channel.send(embed)
         }
     })
 }
 
+const getUserTasks = async () => {}
+
 const getAllTasks = async message => {
-    const tasks = await TaskModel.find({
+    const tasks = await TaskModel.model.find({
         status: "OPEN"
     })
 
@@ -176,6 +194,6 @@ module.exports = {
     complete,
     cancel,
     list,
-    listAll,
+    listAllUsersTask,
     showDailyTasks
 }
