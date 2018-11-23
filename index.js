@@ -1,6 +1,6 @@
+const bot = require("./discord").bot
 require("./database")
 require("./scheduler")
-const bot = require("./discord").bot
 const doCommand = require("./commands").doCommand
 const putaria = require("./putaria")
 
