@@ -37,10 +37,10 @@ const variations = [
     "e tiveram um filho chamado filho da puta",
     "e tiveram que chamar o pedreiro para tampar o rombo",
     "e ele agradeceu a bondade",
+    "e ele tomou no cu literalmente",
 ]
 
 const putaria = message => {
-    console.log("entrou aqui " + message.content)
     const variation = variations[Math.floor(Math.random() * variations.length)]
     if (message.content.toLowerCase().includes("pncdr")) {
         message.channel.send(
