@@ -91,7 +91,7 @@ const cancel = async (taskNumber, message) => {
 /*
  *  Skip Task
  */
-const skip = async (message) => {
+const skip = async message => {
     const task = await TaskModel.model.findOne({
         status: "OPEN",
         discordUser: message.author.id
@@ -99,7 +99,9 @@ const skip = async (message) => {
     if (task) {
         task.lastSkip = new Date()
         await task.save()
-        message.reply("Você adiou suas tarefas para amanhã! Ta vagundin o bixin né?")
+        message.reply(
+            "Você adiou suas tarefas para amanhã! Ta vagundin o bixin né?"
+        )
     } else {
         message.reply("Não tem nenhuma tarefa")
     }
@@ -178,19 +180,21 @@ const getAllTasks = async message => {
 
     return USERS.map(u => {
         if (tasks.findIndex(t => t.discordUser == u.discordUser) > -1) {
-            return RichEmbed.setTitle("Tarefas abertas do **" + u.name + "**")
-                .setColor("#2ecc71")
-                .setDescription(
-                    tasks
-                        .filter(t => t.discordUser == u.discordUser)
-                        .map(
-                            (t, i) =>
-                                ":balloon:  (" +
-                                t.type.substring(5) +
-                                ")   " +
-                                t.description
-                        )
-                )
+            return (
+                "\n**" +
+                u.name +
+                "**\n" +
+                tasks
+                    .filter(t => t.discordUser == u.discordUser)
+                    .map(
+                        e =>
+                            "- " +
+                            e.description +
+                            " (" +
+                            e.type.substring(5) +
+                            ")"
+                    )
+            )
         }
     })
 }
