@@ -32,7 +32,7 @@ const doCommand = message => {
         break
     default:
         message.reply(
-            "Comando inválido. Tente **!help** para ver a lista de comandos"
+            "Comando inválido. Tente **ko help** para ver a lista de comandos"
         )
         break
     }

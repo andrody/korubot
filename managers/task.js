@@ -16,7 +16,7 @@ const add = async (description, message) => {
     let type = "TASK_1"
     if (userTasks.length == 2) {
         message.reply(
-            "Você já tem duas tarefas cadastradas, delete ou conclua uma para adicionar novas tarefas.\nDigite **!help** para ver os todos os comandos."
+            "Você já tem duas tarefas cadastradas, delete ou conclua uma para adicionar novas tarefas.\nDigite **ko help** para ver os todos os comandos."
         )
         return
     }
