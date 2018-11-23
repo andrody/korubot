@@ -181,7 +181,7 @@ const getAllTasks = async message => {
     return USERS.map(u => {
         if (tasks.findIndex(t => t.discordUser == u.discordUser) > -1) {
             return (
-                "**" +
+                "\n**" +
                 u.name +
                 "**\n" +
                 tasks
@@ -190,8 +190,8 @@ const getAllTasks = async message => {
                         e =>
                             "- " +
                             e.description +
-                            "(" +
-                            t.type.substring(5) +
+                            " (" +
+                            e.type.substring(5) +
                             ")"
                     )
             )
