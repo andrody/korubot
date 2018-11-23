@@ -92,7 +92,7 @@ const chargeIfTasksDone = async () => {
                 "! Eu vi que você tem tarefas abertas, você já terminou elas?"
         )
         Task.list(null, null, { user })
-        user.send("`Caso queria adiar essas tarefas para amanha digite ko task skip\nCaso tenha terminado todas digite ko task done all`")
+        user.send("`Caso queria adiar essas tarefas para amanha digite ko task skip\nCaso tenha terminado todas digite ko task done <task_number>`")
     })
 }
 
