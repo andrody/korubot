@@ -28,7 +28,7 @@ scheduler.scheduleJob("0 19 * * 1-5", function() {
 Watcher.watch()
 setInterval(() => {
     Watcher.watch()
-}, 3600000)
+}, 1800000)
 
 
 // scheduler.scheduleJob("0 * * * 1-5", function() {

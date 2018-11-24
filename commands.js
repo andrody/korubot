@@ -3,6 +3,7 @@ const minimist = require("minimist")
 
 const Task = require("./managers/Task")
 const Charge = require("./managers/Charge")
+const Watcher = require("./managers/Watcher")
 const Helper = require("./helper")
 
 const doCommand = message => {
@@ -30,6 +31,9 @@ const doCommand = message => {
         Charge.chargeIfTasksDone()
         setTimeout(Charge.chargeIfTasksDoneSecondTime, 10000)
         break
+    case "status":
+        Watcher.listServices()
+        break
     default:
         message.reply(
             "Comando inválido. Tente **ko help** para ver a lista de comandos"
@@ -51,6 +55,9 @@ const taskCommands = (commands, message) => {
         Task.cancel(commands._[3], message)
         break
     case "list":
+        Task.list(commands.a, message)
+        break
+    case "ls":
         Task.list(commands.a, message)
         break
     case "skip":
