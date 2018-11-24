@@ -1,10 +1,11 @@
 // Discord Imports
 const commands = [
-    ["ko task add <description> _ _ _ ", " _ _ adiciona nova tarefa"],
-    ["ko task list [-a all] _ _ _ _ _ ", " _ _ lista as tarefas"],
+    ["ko task add <description> _ _ _ _ _ _", " _ _ adiciona nova tarefa"],
+    ["ko task list [-a all] _ _ _ _ _ _ _ _", " _ _ lista as tarefas"],
     ["ko task done <task_number> _ _ _ _ _ ", " _ _ conclui a tarefa do numero especificado"],
     ["ko task delete <task_number> _ _ _ _ ", " _ _ cancela a tarefa do numero especificado"],
-    ["ko skip _ _ _ _ _ _ _ _ _ _ _ _ ", " _ _ adia todas as tarefas para o dia seguinte"],
+    ["ko skip _ _ _ _ _ _ _ _ _ _ _ _ _ _  ", " _ _ adia todas as tarefas para o dia seguinte"],
+    ["ko status _ _ _ _ _ _ _ _ _ _ _ _ _ _", " _ _ ver os status dos serviços de api e backoffice"],
     // ["ko folgar", "sinaliza que irá folgar amanhã, logo não fará nenhuma tarefa"],
 ]
 
