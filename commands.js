@@ -34,6 +34,9 @@ const doCommand = message => {
     case "status":
         Watcher.listServices()
         break
+    case "say":
+        Charge.say(commands._[2])
+        break
     default:
         message.reply(
             "Comando inválido. Tente **ko help** para ver a lista de comandos"

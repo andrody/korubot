@@ -116,10 +116,16 @@ const chargeIfTasksDoneSecondTime = async () => {
     })
 }
 
+const say = async sayMsg => {
+    const channel = bot.channels.get(CHANNEL_GENERAL)
+    channel.send(sayMsg)
+}
+
 module.exports = {
     chargeNextTasks,
     chargeNextSecondTime,
     chargeIfTasksDoneSecondTime,
     chargeIfTasksDone,
-    clearCharge
+    clearCharge,
+    say
 }

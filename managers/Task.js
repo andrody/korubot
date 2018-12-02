@@ -204,7 +204,7 @@ const showDailyTasks = async () => {
     if (userTasks.length) {
         const channel = bot.channels.get(CHANNEL_GENERAL)
         channel.send([
-            "Bom dia. Essas são as tarefas cadastradas para hoje"
+            "Bom dia. Essas são as tarefas pendentes"
         ])
         userTasks.map(tasks => {
             if (tasks) {
