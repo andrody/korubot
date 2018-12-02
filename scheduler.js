@@ -12,16 +12,16 @@ scheduler.scheduleJob("0 8 * * 1-5", function() {
 })
 
 // Pedir tarefas do próximo dia
-scheduler.scheduleJob("0 20 * * 0-4", function() {
-    Charge.chargeNextTasks()
-    setTimeout(Charge.chargeNextSecondTime, 7200000)
-})
+// scheduler.scheduleJob("0 20 * * 0-4", function() {
+//     Charge.chargeNextTasks()
+//     setTimeout(Charge.chargeNextSecondTime, 7200000)
+// })
 
 // Perguntar se tarefas foram feitas
-scheduler.scheduleJob("0 19 * * 1-5", function() {
-    Charge.chargeIfTasksDone()
-    setTimeout(Charge.chargeIfTasksDoneSecondTime, 7200000)
-})
+// scheduler.scheduleJob("0 19 * * 1-5", function() {
+//     Charge.chargeIfTasksDone()
+//     setTimeout(Charge.chargeIfTasksDoneSecondTime, 7200000)
+// })
 
 /* Watcher
 =================================== */
