@@ -7,8 +7,9 @@ const Charge = require("./managers/Charge")
 const Watcher = require("./managers/Watcher")
 
 // Bom dia as 8h
-scheduler.scheduleJob("0 8 * * 1-5", function() {
-    Task.showDailyTasks()
+scheduler.scheduleJob("0 9 * * 1-5", function() {
+    // Task.showDailyTasks()
+    // Task.verifyTasks
 })
 
 // Pedir tarefas do próximo dia
