@@ -1,4 +1,4 @@
-const { USERS } = require("./contants")
+const { USERS } = require("./constants")
 const variations = [
     "com gosto",
     "até o talo",

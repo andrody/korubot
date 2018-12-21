@@ -22,3 +22,8 @@ colocar listagem de todas as tasks em um mesmo embed, um embaixo do outro igual 
 colocar foto do usuario no embed igual no video qdo for listas as tasks
 marcar horario de reuniao no escritorio? (perguntar talvez?)
 colocar o helpme num embed em duas colunas igual no video
+
+now ls
+now remove [id]
+now --public
+now scale [id] sfo1 1

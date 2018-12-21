@@ -2,6 +2,7 @@ const splitargs = require("splitargs")
 const minimist = require("minimist")
 
 const Task = require("./managers/Task")
+const TrelloTasks = require("./managers/TrelloTasks")
 const Charge = require("./managers/Charge")
 const Watcher = require("./managers/Watcher")
 const Helper = require("./helper")
@@ -10,9 +11,9 @@ const doCommand = message => {
     const commands = minimist(splitargs(message.content))
     const command = commands._[1]
     switch (command) {
-    case "task":
-        taskCommands(commands, message)
-        break
+    // case "task":
+    //     taskCommands(commands, message)
+    //     break
     case "help":
         Helper.showCommands(message)
         break
@@ -36,6 +37,12 @@ const doCommand = message => {
         break
     case "say":
         Charge.say(commands._[2])
+        break
+    case "tasks":
+        TrelloTasks.chargeAll(message)
+        break
+    case "morning":
+        TrelloTasks.morningChargeTasks()
         break
     default:
         message.reply(

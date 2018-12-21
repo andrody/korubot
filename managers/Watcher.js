@@ -1,5 +1,5 @@
 const WatcherModel = require("../models/WatcherModel")
-const { CHANNEL_GENERAL } = require("../contants")
+const { CHANNEL_GENERAL } = require("../constants")
 
 const bot = require("../discord").bot
 const https = require("https")
