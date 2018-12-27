@@ -4,6 +4,7 @@ const minimist = require("minimist")
 const Task = require("./managers/Task")
 const Charge = require("./managers/Charge")
 const Watcher = require("./managers/Watcher")
+const Empresa = require("./managers/Empresa")
 const Helper = require("./helper")
 
 const doCommand = message => {
@@ -36,6 +37,9 @@ const doCommand = message => {
         break
     case "say":
         Charge.say(commands._[2])
+        break
+    case "empresa":
+        Empresa.listInfo(commands, message)
         break
     default:
         message.reply(
