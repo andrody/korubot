@@ -1,6 +1,6 @@
 const TaskModel = require("../models/TaskModel")
 const Charge = require("./Charge")
-const { USERS, CHANNEL_GENERAL } = require("../contants")
+const { USERS, CHANNEL_GENERAL } = require("../constants")
 
 const bot = require("../discord").bot
 const RichEmbed = require("../discord").RichEmbed

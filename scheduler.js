@@ -3,13 +3,14 @@
 */
 const scheduler = require("node-schedule")
 const Task = require("./managers/Task")
+const TrelloTasks = require("./managers/TrelloTasks")
 const Charge = require("./managers/Charge")
 const Watcher = require("./managers/Watcher")
 
 // Bom dia as 8h
 scheduler.scheduleJob("0 9 * * 1-5", function() {
     // Task.showDailyTasks()
-    // Task.verifyTasks
+    Task.morningChargeTasks()
 })
 
 // Pedir tarefas do próximo dia

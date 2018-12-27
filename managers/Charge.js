@@ -7,7 +7,7 @@ var differenceInHours = require("date-fns/difference_in_hours")
 const ChargeModel = require("../models/ChargeModel")
 const TaskModel = require("../models/TaskModel")
 const Task = require("./Task")
-const { USERS, CHANNEL_GENERAL } = require("../contants")
+const { USERS, CHANNEL_GENERAL } = require("../constants")
 
 /*
  *  Next Tasks
