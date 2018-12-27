@@ -59,68 +59,70 @@ const chargeAll = async (message) => {
     // message.channel.send(embed)
     // let fields = []
     // console.log(lists)
-    const response = lists
-        .filter(e => e.cards.length)
-        .filter(e => e.name.toLowerCase() != 'done')
-        .map((e, i) => {
-            const cards = e.cards.map(c => {
-                const usersObj = USERS.filter(u => c.idMembers.includes(u.trelloId))
-                let users = 'n/a'
-                if (usersObj.length) {
-                    users = usersObj.map(user => user.name).join(', ')
-                }
-                // return (`${users ? (`${users} `) : ''}\"${c.name}\"`)
-                const days = c.due !== null  ? differenceInCalendarDays(c.due, new Date()) : ''
-                let timeleft = ''
-                if (days !== '') {
-                    console.log(days)
-                    timeleft = days === 0 ? 'HOJE!' : (days > 0 ? ('Restam ' + days + ' dias') : ('ATRASADO EM ' + Math.abs(days) + ' DIAS!!'))
-                }
-                return {
-                    task: `+ ${c.name}`,
-                    users,
-                    timeleft
-                }
-            })
-            // fields.push(`${e.name.toLocaleUpperCase()}\n${cards}`)
-            const columns = columnify(cards,
-                {
-                    columns: [
-                        "task",
-                        "users",
-                        "timeleft",
-                    ],
-                    minWidth: 15,
-                    showHeaders: false,
-                    config: {
-                        task: { minWidth: 50, maxWidth: 50 },
-                        users: { minWidth: 15 },
+    if (lists.length) {
+        const response = lists
+            .filter(e => e.cards.length)
+            .filter(e => e.name.toLowerCase() != 'done')
+            .map((e, i) => {
+                const cards = e.cards.map(c => {
+                    const usersObj = USERS.filter(u => c.idMembers.includes(u.trelloId))
+                    let users = 'n/a'
+                    if (usersObj.length) {
+                        users = usersObj.map(user => user.name).join(', ')
                     }
-                }
-            )
-            return `-${e.name}\n${columns}\n`
-        })
-    // message.channel.send({
-    //     embed: {
-    //     color: 0xBA8B47,
-    //     // author: {
-    //     //   name: 'Lista de tarefas',
-    //     //   icon_url: 'https://www.clipartsfree.net/vector/small/28461-parchment-background-or-border-2-icon.png'
-    //     // },
-    //     title: ":scroll: Tarefas",
-    //     url: "https://trello.com/b/HvIRQr0T/tasks",
-    //     // description: "This is a test embed to showcase what they look like and what they can do.",
-    //     fields,
-    //     // timestamp: new Date(),
-    //     // footer: {
-    //     //   icon_url: 'https://www.clipartsfree.net/vector/small/28461-parchment-background-or-border-2-icon.png',
-    //     //   text: "Listagem por departamento"
-    //     // }
-    //   }
-    // });
-
-    // const respond = "```xl\n" + fields.join('\n\n') + "[1] [a] (a)\n```"
-    message.channel.send("```diff\n" + response.join('\n') + "```")
+                    // return (`${users ? (`${users} `) : ''}\"${c.name}\"`)
+                    const days = c.due !== null  ? differenceInCalendarDays(c.due, new Date()) : ''
+                    let timeleft = ''
+                    if (days !== '') {
+                        console.log(days)
+                        timeleft = days === 0 ? 'HOJE!' : (days > 0 ? ('Restam ' + days + ' dias') : ('ATRASADO EM ' + Math.abs(days) + ' DIAS!!'))
+                    }
+                    return {
+                        task: `+ ${c.name}`,
+                        users,
+                        timeleft
+                    }
+                })
+                // fields.push(`${e.name.toLocaleUpperCase()}\n${cards}`)
+                const columns = columnify(cards,
+                    {
+                        columns: [
+                            "task",
+                            "users",
+                            "timeleft",
+                        ],
+                        minWidth: 15,
+                        showHeaders: false,
+                        config: {
+                            task: { minWidth: 50, maxWidth: 50 },
+                            users: { minWidth: 15 },
+                        }
+                    }
+                )
+                return `-${e.name}\n${columns}\n`
+            })
+        // message.channel.send({
+        //     embed: {
+        //     color: 0xBA8B47,
+        //     // author: {
+        //     //   name: 'Lista de tarefas',
+        //     //   icon_url: 'https://www.clipartsfree.net/vector/small/28461-parchment-background-or-border-2-icon.png'
+        //     // },
+        //     title: ":scroll: Tarefas",
+        //     url: "https://trello.com/b/HvIRQr0T/tasks",
+        //     // description: "This is a test embed to showcase what they look like and what they can do.",
+        //     fields,
+        //     // timestamp: new Date(),
+        //     // footer: {
+        //     //   icon_url: 'https://www.clipartsfree.net/vector/small/28461-parchment-background-or-border-2-icon.png',
+        //     //   text: "Listagem por departamento"
+        //     // }
+        //   }
+        // });
+    
+        // const respond = "```xl\n" + fields.join('\n\n') + "[1] [a] (a)\n```"
+        message.channel.send("```diff\n" + response.join('\n') + "```")
+    }
 }
 
 module.exports = {
