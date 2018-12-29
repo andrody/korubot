@@ -10,7 +10,7 @@ const Watcher = require("./managers/Watcher")
 // Bom dia as 8h
 scheduler.scheduleJob("0 9 * * 1-5", function() {
     // Task.showDailyTasks()
-    Task.morningChargeTasks()
+    TrelloTasks.morningChargeTasks() 
 })
 
 // Pedir tarefas do próximo dia
