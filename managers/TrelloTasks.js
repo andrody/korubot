@@ -11,7 +11,26 @@ const boardTasksID = "5c1bc533b7a78a1c2a7d1b36"
 const { USERS, CHANNEL_GENERAL } = require("../constants")
 const RichEmbed = require("../discord").RichEmbed
 
-const getFromTrello = async () => {
+const koruBoardId = "5c9770d81d2ad179b66b024e"
+
+const getBoardsFromTrello = async () => {
+    return new Promise((resolve, reject) => {
+        trello.getListsOnBoard(boardTasksID, async (err, lists) => {
+            let boards = []
+            console.log(lists)
+            // await Promise.all(
+            //     lists.map(async l => {
+            //         const cards = await getCardsOnListFromTrello(l.id)
+            //         l.cards = cards
+            //         tasks.push(l)
+            //     })
+            // )
+            // resolve(tasks.sort((a, b) => a.pos >= b.pos))
+        })
+    })
+}
+
+const getListsFromTrello = async () => {
     return new Promise((resolve, reject) => {
         trello.getListsOnBoard(boardTasksID, async (err, lists) => {
             let tasks = []
@@ -43,82 +62,84 @@ const morningChargeTasks = async () => {
 }
 
 const chargeAll = async message => {
-    const lists = await getFromTrello()
-    const separator = '----------------------------------------------------------------------'
-    if (lists.length) {
-        const response = lists
-            .filter(e => e.cards.length)
-            .filter(e => e.name.toLowerCase() != "done")
-            .map((e, i) => {
-                const tasks = USERS.map(user => {
-                    const cards = e.cards
-                        .filter(c => c.idMembers.includes(user.trelloId))
-                        .map(c => {
-                            const days = c.due !== null  ? differenceInCalendarDays(c.due, new Date()) : ''
-                            var formattedDays = ("0" + days).slice(-2)
-                            let timeleft = ''
-                            if (days !== '') {
-                                console.log(days)
-                                timeleft = days === 0 ? '-HOJE-' : (days > 0 ? (formattedDays + ' dias') : ('ATRASADO EM ' + Math.abs(days) + ' DIAS!!'))
-                            }
-                            return `__${timeleft}__  ${c.name}\n`
+    // trello.getListsOnBoard(koruBoardId, (err, lists) => {
+    //     const sprintsList = lists.find(x => x.name === "Sprint boards")
+    //     trello.getCardsOnList(sprintsList.id, (err, cards) => {
+    //     })
+    // })
+
+    const koruLists = await trello.getListsOnBoard(koruBoardId)
+    const koruSprintsCards = await trello.getCardsOnList(
+        koruLists.find(x => x.name === "Sprint boards").id
+    )
+
+    const separator =
+        "----------------------------------------------------------------------"
+    var response = []
+    await Promise.all(
+        koruSprintsCards.map(async spCard => {
+            const lists = await trello.getListsOnBoard(spCard.desc)
+            if (lists.length) {
+                const filteredList = lists.filter(
+                    e =>
+                        e.name.toLowerCase().includes("🚩") &&
+                        !e.name.toLowerCase().includes("done")
+                )
+                const boardOpenTasks = await Promise.all(
+                        filteredList.map(async (e, i) => {
+                            const cards = await trello.getCardsOnList(e.id)
+                            const tasks = USERS.map(user => {
+                                const cardsMapped = cards
+                                    .filter(c =>
+                                        c.idMembers.includes(user.trelloId)
+                                    )
+                                    .map(c => {
+                                        const days =
+                                            c.due !== null
+                                                ? differenceInCalendarDays(
+                                                      c.due,
+                                                      new Date()
+                                                  )
+                                                : ""
+                                        var formattedDays = ("0" + days).slice(
+                                            -2
+                                        )
+                                        let timeleft = ""
+                                        if (days !== "") {
+                                            console.log(days)
+                                            timeleft =
+                                                days === 0
+                                                    ? "-HOJE-"
+                                                    : days > 0
+                                                    ? formattedDays + " dias"
+                                                    : "⚠️ ATRASADO EM " +
+                                                      Math.abs(days) +
+                                                      " DIAS!!"
+                                        }
+                                        return `__${timeleft}__  ${c.name}\n`
+                                    })
+                                    .join("")
+                                if (cardsMapped) {
+                                    return `**${user.name}**\n${cardsMapped}\n`
+                                }
+                                return ""
+                            })
+                            return `${separator}\n${
+                                e.name
+                            } - ${spCard.name}\n${separator}\n${tasks.join("")}`
                         })
-                        .join('')
-                    if (cards) {
-                        return `**${user.name}**\n${cards}\n`
-                    }
-                    return ''
-                })
-                return `${separator}\n${
-                    e.name
-                }\n${separator}\n${tasks.join('')}`
-            })
-        const link = `${separator}\n<https://trello.com/b/HvIRQr0T/tarefas>\n${separator}`
-        message.channel.send(response.join('') + link)
-    }
-    // const cards = e.cards.map(c => {
-    // const usersObj = USERS.filter(u => c.idMembers.includes(u.trelloId))
-    //             let users = 'n/a'
-    //             if (usersObj.length) {
-    //                 users = usersObj.map(user => user.name).join(', ')
-    //             }
-    //             // return (`${users ? (`${users} `) : ''}\"${c.name}\"`)
-    //             const days = c.due !== null  ? differenceInCalendarDays(c.due, new Date()) : ''
-    //             let timeleft = ''
-    //             if (days !== '') {
-    //                 console.log(days)
-    //                 timeleft = days === 0 ? 'HOJE!' : (days > 0 ? ('Restam ' + days + ' dias') : ('ATRASADO EM ' + Math.abs(days) + ' DIAS!!'))
-    //             }
-    //             return {
-    //                 task: `+ ${c.name}`,
-    //                 users,
-    //                 timeleft
-    //             }
-    //         })
-    //         const columns = columnify(cards,
-    //             {
-    //                 columns: [
-    //                     "task",
-    //                     "users",
-    //                     "timeleft",
-    //                 ],
-    //                 minWidth: 15,
-    //                 showHeaders: false,
-    //                 config: {
-    //                     task: { minWidth: 50, maxWidth: 50 },
-    //                     users: { minWidth: 15 },
-    //                 }
-    // message.channel.send("```diff\n" + response.join('\n') + "```\n\nGerencie as tarefas em https://trello.com/b/HvIRQr0T/tarefas")
-    // message.channel.send({embed: {
-    //     color: 0xBA8B47,
-    //     title: ":scroll: Tarefas",
-    //     url: "https://trello.com/b/HvIRQr0T/tarefas",
-    //     description: "```diff\n" + response.join('\n') + "```",
-    //     footer: {
-    //         icon_url: 'https://www.clipartsfree.net/vector/small/28461-parchment-background-or-border-2-icon.png',
-    //         text: "Listagem por departamento"
-    //     }
-    // }})
+                    )
+                    // const link = `${separator}\n<${spCard.shortUrl}>\n${separator}`
+                    // boardOpenTasks.push(link)
+                    response.push(boardOpenTasks)
+            }
+        })
+    )
+    console.log("response", response)
+    message.channel.send(response.join(""))
+
+    // getBoardsFromTrello()
+    // const lists = await getListsFromTrello()
 }
 
 module.exports = {
