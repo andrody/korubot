@@ -62,32 +62,30 @@ const morningChargeTasks = async () => {
 }
 
 const chargeAll = async message => {
-    // trello.getListsOnBoard(koruBoardId, (err, lists) => {
-    //     const sprintsList = lists.find(x => x.name === "Sprint boards")
-    //     trello.getCardsOnList(sprintsList.id, (err, cards) => {
-    //     })
-    // })
+    try {
+        const koruLists = await trello.getListsOnBoard(koruBoardId)
+        const koruSprintsCards = await trello.getCardsOnList(
+            koruLists.find(x => x.name === "Sprint boards").id
+        )
 
-    const koruLists = await trello.getListsOnBoard(koruBoardId)
-    const koruSprintsCards = await trello.getCardsOnList(
-        koruLists.find(x => x.name === "Sprint boards").id
-    )
-
-    const separator =
-        "----------------------------------------------------------------------"
-    var response = []
-    await Promise.all(
-        koruSprintsCards.map(async spCard => {
-            const lists = await trello.getListsOnBoard(spCard.desc)
-            if (lists.length) {
-                const filteredList = lists.filter(
-                    e =>
-                        e.name.toLowerCase().includes("🚩") &&
-                        !e.name.toLowerCase().includes("done")
-                )
-                const boardOpenTasks = await Promise.all(
+        const separator =
+            "----------------------------------------------------------------------"
+        var response = []
+        await Promise.all(
+            koruSprintsCards.map(async spCard => {
+                const lists = await trello.getListsOnBoard(spCard.desc)
+                if (lists.length) {
+                    const filteredList = lists.filter(
+                        e =>
+                            e.name.toLowerCase().includes("🚩") &&
+                            !e.name.toLowerCase().includes("done")
+                    )
+                    const boardOpenTasks = await Promise.all(
                         filteredList.map(async (e, i) => {
                             const cards = await trello.getCardsOnList(e.id)
+                            if (!cards || !cards.length) {
+                                return null
+                            }
                             const tasks = USERS.map(user => {
                                 const cardsMapped = cards
                                     .filter(c =>
@@ -124,22 +122,31 @@ const chargeAll = async message => {
                                 }
                                 return ""
                             })
-                            return `${separator}\n${
-                                e.name
-                            } - ${spCard.name}\n${separator}\n${tasks.join("")}`
+                            return `${separator}\n${e.name} - ${
+                                spCard.name
+                            }\n${separator}\n${tasks.join("")}`
                         })
                     )
                     // const link = `${separator}\n<${spCard.shortUrl}>\n${separator}`
                     // boardOpenTasks.push(link)
-                    response.push(boardOpenTasks)
-            }
-        })
-    )
-    console.log("response", response)
-    message.channel.send(response.join(""))
-
-    // getBoardsFromTrello()
-    // const lists = await getListsFromTrello()
+                    const listTasks = boardOpenTasks.filter(x => x !== null)
+                    console.log("listTasks", listTasks)
+                    if (listTasks.length) {
+                        response.push(listTasks)
+                    }
+                }
+            })
+        )
+        console.log("response", response)
+        message.channel.send(response.join(""))
+    } catch (e) {
+        console.log(e)
+    }
+    // trello.getListsOnBoard(koruBoardId, (err, lists) => {
+    //     const sprintsList = lists.find(x => x.name === "Sprint boards")
+    //     trello.getCardsOnList(sprintsList.id, (err, cards) => {
+    //     })
+    // })
 }
 
 module.exports = {
