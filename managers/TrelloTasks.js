@@ -86,10 +86,19 @@ const chargeAll = async message => {
                             if (!cards || !cards.length) {
                                 return null
                             }
+                            console.log(cards)
                             const tasks = USERS.map(user => {
                                 const cardsMapped = cards
-                                    .filter(c =>
-                                        c.idMembers.includes(user.trelloId)
+                                    .filter(
+                                        c =>
+                                            c.idMembers.includes(
+                                                user.trelloId
+                                            ) &&
+                                            c.labels.findIndex(
+                                                x =>
+                                                    x.name.toLowerCase() ===
+                                                    "feito"
+                                            ) === -1
                                     )
                                     .map(c => {
                                         const days =
@@ -130,14 +139,12 @@ const chargeAll = async message => {
                     // const link = `${separator}\n<${spCard.shortUrl}>\n${separator}`
                     // boardOpenTasks.push(link)
                     const listTasks = boardOpenTasks.filter(x => x !== null)
-                    console.log("listTasks", listTasks)
                     if (listTasks.length) {
                         response.push(listTasks)
                     }
                 }
             })
         )
-        console.log("response", response)
         message.channel.send(response.join(""))
     } catch (e) {
         console.log(e)
