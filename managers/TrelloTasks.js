@@ -86,7 +86,6 @@ const chargeAll = async message => {
                             if (!cards || !cards.length) {
                                 return null
                             }
-                            console.log(cards)
                             const tasks = USERS.map(user => {
                                 const cardsMapped = cards
                                     .filter(
@@ -113,7 +112,6 @@ const chargeAll = async message => {
                                         )
                                         let timeleft = ""
                                         if (days !== "") {
-                                            console.log(days)
                                             timeleft =
                                                 days === 0
                                                     ? "-HOJE-"
