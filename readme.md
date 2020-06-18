@@ -1,7 +1,7 @@
 <!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
 <p align="center">
   <a href="https://github.com/andrody/korubot">
-    <img alt="Gatsby" src="hhttps://bitbucket-assetroot.s3.amazonaws.com/c/photos/2018/Nov/23/4019497738-8-korubot-logo_avatar.png" width="60" />
+    <img alt="Korubot" src="https://bitbucket-assetroot.s3.amazonaws.com/c/photos/2018/Nov/23/4019497738-8-korubot-logo_avatar.png" width="60" />
   </a>
 </p>
 <h1 align="center">
