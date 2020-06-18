@@ -1,3 +1,31 @@
+<!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
+<p align="center">
+  <a href="https://github.com/andrody/korubot">
+    <img alt="Gatsby" src="hhttps://bitbucket-assetroot.s3.amazonaws.com/c/photos/2018/Nov/23/4019497738-8-korubot-logo_avatar.png" width="60" />
+  </a>
+</p>
+<h1 align="center">
+  Korubot
+</h1>
+
+Bot de discord para melhorar produtividade e automatizar processos da empresa no discord
+
+## 🚀 Funcionalidades
+
+1.  **Marcar daily meeting**
+
+    Navigate into your new site’s directory and start it up.
+
+    ```shell
+    cd guilda-landing/
+    yarn start
+    ```
+
+2.  **Lembrete de lista de afazeres**
+3.  **Cobrar Tarefas**
+4.  **Checar status dos serviços**
+5.  **Mostrar dados da empresa**
+
 *Perguntar* duas coisas que vai fazer hoje (pergunta diferente)
     Quando pergunta, vai pra lista de cobrança. 
     Cobra todo dia as 19h.
@@ -5,24 +33,8 @@
     Se não responder a cobrança, cobra de novo depois de 3h. Se não responder 
 *Cobrar* se fez as coisas
 
-Se não fez
 
-
-
-
-# Lembrar de pagar contas (Fica lembrando ate dizer q pagou)
-# Função de cobrar Joel (Ou cobrar de alguem cobrar o Joel ou avisar que joel ta devendo)
-# Fazer relatorio mensal de quanto ele ta devendo (Joel) e quanto pagou
-
-# Fazer com que eu possa agendar tarefas para Certa pessoa ou cargo (Gerente financeiro), certa data e certo turno/horario (Manha/Tarde/Noite ou horario especifica)
-   #!create_task 11/12/18 manha romerio (Dar a bunda) 
-
-
-colocar listagem de todas as tasks em um mesmo embed, um embaixo do outro igual no video que vi do youtube
-colocar foto do usuario no embed igual no video qdo for listas as tasks
-marcar horario de reuniao no escritorio? (perguntar talvez?)
-colocar o helpme num embed em duas colunas igual no video
-
+## Deploy
 now ls
 now remove [id]
 now --public
